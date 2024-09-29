@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors Game</title>
+    <!-- Link to Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Roboto', sans-serif; 
+            text-align: center; 
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2); 
+            height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            flex-direction: column; 
+            overflow: hidden; 
+            position: relative; 
+            margin: 0; /* Reset margin */
+        }
+        .container {
+            max-width: 600px; /* Maximum width for desktop */
+            width: 100%; /* Full width for mobile */
+            padding: 20px; /* Padding for inner spacing */
+            box-sizing: border-box; /* Include padding in total width */
+        }
+        .butterfly {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/e/e0/Butterfly_icon.svg') no-repeat center/contain;
+            opacity: 0.7;
+            animation: fly 10s linear infinite;
+        }
+        @keyframes fly {
+            0% {
+                transform: translateX(-100px) translateY(0) rotate(0deg);
+            }
+            100% {
+                transform: translateX(100vw) translateY(-200px) rotate(360deg);
+            }
+        }
+        .background-decoration {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            box-shadow: 0 0 100px rgba(240, 237, 86, 0.5);
+            animation: float 3s ease-in-out infinite;
+        }
+        .decoration1 {
+            background: rgba(255, 100, 100, 0.4);
+            top: -50px;
+            left: -150px;
+            transform: translateZ(-100px);
+        }
+        .decoration2 {
+            background: rgba(100, 100, 255, 0.4);
+            bottom: -50px;
+            right: -150px;
+            transform: translateZ(-150px);
+        }
+        .decoration3 {
+            background: rgba(100, 255, 100, 0.4);
+            top: 50px;
+            right: -100px;
+            transform: translateZ(-50px);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        button {
+            margin: 10px;
+            padding: 15px 30px;
+            font-size: 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            transition: transform 0.2s, background-color 0.3s;
+            font-weight: bold;
+            position: relative;
+            z-index: 1; /* Ensure buttons are above decorations */
+            box-shadow: 0 0 10px #ff4757, 0 0 20px #ff4757, 0 0 30px #ff4757; /* Neon effect */
+        }
+        button:nth-child(2) {
+            box-shadow: 0 0 10px #1e90ff, 0 0 20px #1e90ff, 0 0 30px #1e90ff; /* Neon effect */
+        }
+        button:nth-child(3) {
+            box-shadow: 0 0 10px #2ed573, 0 0 20px #2ed573, 0 0 30px #2ed573; /* Neon effect */
+        }
+        button:hover {
+            transform: scale(1.1) rotateY(10deg);
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 24px;
+            opacity: 0;
+            transition: opacity 0.5s, transform 0.5s;
+            transform: translateY(-20px); /* Start slightly above */
+            z-index: 1; /* Ensure result is above decorations */
+        }
+        #result.show {
+            opacity: 1;
+            transform: translateY(0); /* Move to original position */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Randomly placed butterflies -->
+        <div class="butterfly" style="top: 20%; left: -100px; animation-delay: 0s;"></div>
+        <div class="butterfly" style="top: 40%; left: -100px; animation-delay: 2s;"></div>
+        <div class="butterfly" style="top: 60%; left: -100px; animation-delay: 4s;"></div>
+        <div class="butterfly" style="top: 80%; left: -100px; animation-delay: 1s;"></div>
+
+        <div class="background-decoration decoration1"></div>
+        <div class="background-decoration decoration2"></div>
+        <div class="background-decoration decoration3"></div>
+
+        <h1 style="color: #333;">Rock Paper Scissors Game</h1>
+        <button onclick="playGame('rock')">Rock</button>
+        <button onclick="playGame('paper')">Paper</button>
+        <button onclick="playGame('scissors')">Scissors</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function playGame(userChoice) {
+            const choices = ['rock', 'paper', 'scissors'];
+            const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+
+            let result;
+
+            // Determine the winner using if statements
+            if (userChoice === computerChoice) {
+                result = "It's a tie! Both chose " + computerChoice + ".";
+            } 
+            else if (userChoice === 'rock') {
+                result = (computerChoice === 'scissors') ? "You win! Rock beats Scissors." : "You lose! Paper beats Rock.";
+            } 
+            else if (userChoice === 'paper') {
+                result = (computerChoice === 'rock') ? "You win! Paper beats Rock." : "You lose! Scissors beats Paper.";
+            } 
+            else if (userChoice === 'scissors') {
+                result = (computerChoice === 'paper') ? "You win! Scissors beats Paper." : "You lose! Rock beats Scissors.";
+            }
+
+            // Update result and add fade-in effect
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerText = result;
+            resultDiv.classList.remove('show'); // Reset class
+            setTimeout(() => {
+                resultDiv.classList.add('show'); // Add class after a brief delay
+            }, 10); // Short delay to trigger fade-in
+        }
+    </script>
+</body>
+</html>
